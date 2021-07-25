@@ -8,8 +8,14 @@ router.get("/", (req, res, next) => {
 });
 
 router.post("/", (req, res, next) => {
+  const usuario = {
+    nome: req.body.nome,
+    email: req.body.email,
+    senha: req.body.senha,
+  };
   res.status(201).send({
     mensagem: " Rota do POST criada",
+    usuario: usuario,
   });
 });
 
