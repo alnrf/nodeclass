@@ -2,15 +2,10 @@ const express = require("express");
 const router = express.Router();
 const pool = require("../database");
 
-router.get("/todos", async (req, res, next) => {
-  try {
-    const sqlQuery = "SELECT * from usuarios";
-    const rows = await pool.query(sqlQuery);
-    res.status(200).json(rows);
-  } catch (error) {
-    res.status(500).send(error.message);
-  }
-});
+//import the controllers
+const usuariosController = require("../controllers/usuarios-controller");
+
+router.get("/todos", usuariosController.getUsuarios);
 
 router.post("/", async (req, res, next) => {
   try {

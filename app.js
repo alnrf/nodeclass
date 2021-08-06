@@ -4,10 +4,11 @@ const bodyParser = require("body-parser");
 
 const rotaUsuarios = require("./routes/usuarios");
 const rotaPedidos = require("./routes/pedidos");
+const rotaProdutos = require("./routes/produtos");
 
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
-
+app.use("/uploads", express.static("uploads"));
 app.use((req, res, next) => {
   res.header("Access-Control-Allow-Origin", "*");
   res.header(
@@ -24,6 +25,7 @@ app.use((req, res, next) => {
 
 app.use("/usuarios", rotaUsuarios);
 app.use("/pedidos", rotaPedidos);
+app.use("/produtos", rotaProdutos);
 
 app.use((req, res, next) => {
   const erro = new Error("Não encontrado");
