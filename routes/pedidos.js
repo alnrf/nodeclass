@@ -14,7 +14,7 @@ router.get("/", async (req, res, next) => {
 from
 	node.pedidos p
 inner join node.clientes c
-where
+on
 	p.id_pedido = c.id_pedido`;
     const rows = await pool.query(sqlQuery);
     res.status(200).json(rows);
