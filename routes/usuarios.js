@@ -11,7 +11,7 @@ router.get("/getUsuarios", usuariosController.getUsuarios);
 
 router.post("/cadastro", async (req, res, next) => {
   var hash = bcrypt.hashSync(req.body.senha);
-  console.log(hash);
+
   try {
     const sqlQuery = "INSERT INTO usuarios (email, senha) values (?,?)";
     const results = await pool.query(sqlQuery, [req.body.email, hash]);
@@ -24,12 +24,21 @@ router.post("/cadastro", async (req, res, next) => {
 });
 
 router.post("/login", async (req, res, next) => {
+  const hashCompare = (hashRecovered, hashLoged) => {
+    if (hashRecovered === hashLoged) {
+      return true;
+    } else {
+      return false;
+    }
+  };
   try {
+    var hashLogin = bcrypt.hashSync(req.body.senha);
     const sqlQuery = `SELECT * FROM usuarios WHERE email = ?`;
     var results = await pool.query(sqlQuery, [req.body.email]);
-    res.status(200).json(results[0].senha);
+    var hashResult = await hashCompare(results[0].senha, hashLogin);
+    res.status(200).json({ hash: hashResult });
   } catch (error) {
-    res.status(400).send(error.message);
+    res.status(400).send({ hash: hashResult });
   }
 });
 
